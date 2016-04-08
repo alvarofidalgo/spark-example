@@ -18,7 +18,7 @@
  
  Change test/resources/application.conf and configure this parameters.
  
- CUANDO TENGA LA CONEXIÓN A KAFKA PONER LOS PARÁMETROS QUE NECESITO PARA QUE SE CONECTE AL KAFKA
+
  
  
 ## STEPS TO DEVELOP
