@@ -18,7 +18,7 @@
  
  Change test/resources/application.conf and configure this parameters :
  
- **Authorization with twiter
+ **Authorization with twiter**
  -------------------------------
  
  To retrieve this parameter values you need register App in Twiter (https://apps.twitter.com/)
@@ -28,7 +28,7 @@
  authKeys.accessToken
  authKeys.tokenSecret
 
- **Zookeper connection
+ **Zookeper connection**
  -----------------------------
  
  kafka.zookeperHosts : String with "host1:port1,...., hostn:portn" . In this zookeper we save all kafka topic configuration
@@ -45,5 +45,12 @@
  
  **org.apache.spark.streaming.StreamingContextWrapper.scala**
  -------------------------------------------------------------------------------------
+ 
+ If we want to test a streaming aplication we will need a sinchronous clock , as org.apache.spark.util.ManualClock is 
+ protected spark class we had to implement this class in override package.
+ 
+ In this class we assign manual clock to any StreamingContext. We could use this manual clock in aour test.
+ 
+
   
  

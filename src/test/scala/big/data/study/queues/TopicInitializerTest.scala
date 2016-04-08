@@ -1,7 +1,7 @@
 package big.data.study.queues
 
 import big.data.study.exceptions.TopicException
-import com.typesafe.config.ConfigFactory
+import big.data.study.config.Config
 import kafka.utils.{ZkUtils, ZKStringSerializer}
 import org.I0Itec.zkclient.ZkClient
 import org.junit.runner.RunWith
@@ -11,11 +11,8 @@ import org.scalatest.{ShouldMatchers, WordSpec}
 import scala.util.{Try,Success,Failure}
 
 @RunWith(classOf[JUnitRunner])
-class TopicInitializerTest extends WordSpec with ShouldMatchers {
+class TopicInitializerTest extends WordSpec with ShouldMatchers with Config{
 
-
-
-  val conf = ConfigFactory.load()
   private val zkClient = new ZkClient(conf.getString("kafka.zookeperHosts"),
                                       conf.getInt("kafka.zookeperConnectionTimeOut"),
                                       conf.getInt("kafka.zookeperSessionTimeout"),
