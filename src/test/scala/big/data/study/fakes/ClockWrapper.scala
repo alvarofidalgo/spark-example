@@ -1,6 +1,5 @@
 package big.data.study.fakes
 
-import big.data.study.fakes.StreamingContextFake
 import org.apache.spark.streaming.StreamingContextWrapper
 
 class ClockWrapper[T](sscFake: StreamingContextFake[T]) {

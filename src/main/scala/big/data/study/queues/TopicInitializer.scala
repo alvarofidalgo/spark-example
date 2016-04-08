@@ -2,7 +2,7 @@ package big.data.study.queues
 
 import java.util.Properties
 
-import big.data.study.exceptions.TopicException
+import big.data.study.config.Config
 import kafka.admin.AdminUtils
 import kafka.common.TopicExistsException
 import kafka.utils.ZKStringSerializer
@@ -16,19 +16,20 @@ class TopicInitializer (zkClient:ZkClient){
   def initTopic(topic:String):Unit ={
 
     Try(AdminUtils.createTopic(zkClient, topic, 10, 1, new Properties())) match {
-      case  Failure(ex:TopicExistsException)=>throw new TopicException("Exist a topic with this name")
-      case Failure(ex) => throw new RuntimeException("unexpected error")
       case Success(_)=>
+      case Failure(ex:TopicExistsException)=>
+      case Failure(ex) => throw new RuntimeException("unexpected error")
     }
   }
 }
 
-//TODO : include typesafe
-object TopicInitializer {
 
-  private val sessionTimeoutMs = 10000
-  private val connectionTimeoutMs = 10000
-  private val zkClient = new ZkClient("192.168.99.100:2181", sessionTimeoutMs, connectionTimeoutMs,ZKStringSerializer)
+object TopicInitializer extends Config{
+
+  private lazy val zkClient = new ZkClient(conf.getString("kafka.zookeperHosts"),
+                                           conf.getInt("kafka.zookeperConnectionTimeOut"),
+                                           conf.getInt("kafka.zookeperSessionTimeout"),
+                                           ZKStringSerializer)
 
   def apply(): Unit ={
       new TopicInitializer(zkClient)
