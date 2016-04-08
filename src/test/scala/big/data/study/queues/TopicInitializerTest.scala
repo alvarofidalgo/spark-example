@@ -48,7 +48,4 @@ class TopicInitializerTest extends WordSpec with ShouldMatchers {
            }
       }
   }
-
-  private def
-
 }
