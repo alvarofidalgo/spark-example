@@ -16,11 +16,27 @@
  
  https://hub.docker.com/r/spotify/kafka/
  
- Change test/resources/application.conf and configure this parameters.
+ Change test/resources/application.conf and configure this parameters :
+ 
+ Authorization with twiter
+ -------------------------------
+ 
+ To retrieve this parameter values you need register App in Twiter (https://apps.twitter.com/)
+ 
+ authKeys.consumerKey
+ authKeys.consumerSecret
+ authKeys.accessToken
+ authKeys.tokenSecret
+
+ Zookeper connection
+ -----------------------------
+ 
+ kafka.zookeperHosts : String with "host1:port1,...., hostn:portn" . In this zookeper we save all kafka topic configuration
+ kafka.zookeperConnectionTimeOut : Integer value that represent timeout with zookeper in milliseconds.
+ kafka.zookeperSessionTimeout : Integer value that represent session timeout with zookeper.
+ 
  
 
- 
- 
 ## STEPS TO DEVELOP
 
  In first time we will need our application can be tested how this application ingest data from twiter exist an extra 

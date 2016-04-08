@@ -22,7 +22,6 @@ import org.scalatest.time.Millis
 import org.scalatest.time.Span
 import twitter4j.Status
 
-//TODO : ADD NEW TEST WITH TWO AND CERO ELEMENTS
 
 @RunWith(classOf[JUnitRunner])
 class IngestorTest extends WordSpec  with PersistFactoryMock

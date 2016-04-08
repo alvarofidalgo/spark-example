@@ -20,6 +20,7 @@ class TopicInitializerTest extends WordSpec with ShouldMatchers {
                                       conf.getInt("kafka.zookeperConnectionTimeOut"),
                                       conf.getInt("kafka.zookeperSessionTimeout"),
                                       ZKStringSerializer)
+
   private val initializer = new TopicInitializer(zkClient)
   private val topic = "topic"
 
@@ -27,12 +28,13 @@ class TopicInitializerTest extends WordSpec with ShouldMatchers {
 
   " We want to create topic and result  " should {
 
-      " be TopicExistException throwed if topic exist " in {
+      " be nothing if topic exist " in {
          zkClient.deleteRecursive(ZkUtils.getTopicPath(topic))
          initializer.initTopic (topic)
          Try(initializer.initTopic (topic)) match{
             case Success(_)=>
-            case Failure(ex:TopicException) => fail(" when exist exeption then ")
+            case Failure(ex:TopicException) => fail(" when exist exeption then fail ")
+            case Failure(ex) =>  fail(" when exist exeption then fail ")
         }
       }
 
@@ -41,9 +43,12 @@ class TopicInitializerTest extends WordSpec with ShouldMatchers {
            zkClient.deleteRecursive(ZkUtils.getTopicPath(topic))
            Try(initializer.initTopic (topic)) match{
              case Success(_)=>
-             case Failure(ex:TopicException) => fail(" when exist exeption then ")
+             case Failure(ex:TopicException) =>  fail(" when exist exeption then fail ")
+             case Failure(ex) =>  fail(" when exist exeption then fail ")
            }
       }
   }
+
+  private def
 
 }
