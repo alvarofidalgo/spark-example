@@ -23,17 +23,17 @@
  
  To retrieve this parameter values you need register App in Twiter (https://apps.twitter.com/)
  
- authKeys.consumerKey
- authKeys.consumerSecret
- authKeys.accessToken
- authKeys.tokenSecret
+ authKeys.consumerKey</br>
+ authKeys.consumerSecret</br>
+ authKeys.accessToken</br>
+ authKeys.tokenSecret</br>
 
  **Zookeper connection**
  -----------------------------
  
- kafka.zookeperHosts : String with "host1:port1,...., hostn:portn" . In this zookeper we save all kafka topic configuration
- kafka.zookeperConnectionTimeOut : Integer value that represent timeout with zookeper in milliseconds.
- kafka.zookeperSessionTimeout : Integer value that represent session timeout with zookeper.
+ kafka.zookeperHosts : String with "host1:port1,...., hostn:portn" . In this zookeper we save all kafka topic configuration</br>
+ kafka.zookeperConnectionTimeOut : Integer value that represent timeout with zookeper in milliseconds.</br>
+ kafka.zookeperSessionTimeout : Integer value that represent session timeout with zookeper.</br>
  
  
 
