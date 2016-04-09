@@ -16,6 +16,8 @@
  
  https://hub.docker.com/r/spotify/kafka/
  
+ To run docker run  -p 2181:2181 -p 9092:9092 --env ADVERTISED_HOST=192.168.99.100 IMAGE spotify/kafka
+ 
  Change test/resources/application.conf and configure this parameters :
  
  **Authorization with twiter**
@@ -46,10 +48,20 @@
  **org.apache.spark.streaming.StreamingContextWrapper.scala**
  -------------------------------------------------------------------------------------
  
- If we want to test a streaming aplication we will need a sinchronous clock , as org.apache.spark.util.ManualClock is 
+ If we want to test a streaming aplication we will need a synchronous clock , as org.apache.spark.util.ManualClock is 
  protected spark class we had to implement this class in override package.
  
- In this class we assign manual clock to any StreamingContext. We could use this manual clock in aour test.
+ In this class we assign manual clock to any StreamingContext. We could use this manual clock in our test.
+ 
+ **big.data.study.fakes.ClockWrapper.scala**
+ -----------------------------------------------------------
+ 
+ In this class we have method to can advance clock in synchronous mode.
+ 
+ **big.data.study.fakes.StreamingContextFake.scala**
+ --------------------------------------------------------------------
+ 
+ In this class we simulate data window for each time advance.
  
 
   
