@@ -1,4 +1,4 @@
-package big.data.study.persist
+package big.data.study.queues.serializers
 
 import java.util
 import java.util.Date
@@ -8,8 +8,6 @@ import org.apache.kafka.common.serialization.Serializer
 
 
 class TwitsSerializer extends Serializer[(String,Date)] with Config{
-
-
 
   override def configure(map: util.Map[String, _], b: Boolean): Unit = {}
 

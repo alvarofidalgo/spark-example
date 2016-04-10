@@ -38,7 +38,7 @@ class TopicInitializerTest extends WordSpec with ShouldMatchers with Config{
         }
       }
 
-      " be process finish if not exist topic " in {
+      " be topic is created " in {
            val expectedTopics = 1
            zkClient.deleteRecursive(ZkUtils.getTopicPath(topic))
            Try(initializer.initTopic (topic)) match{

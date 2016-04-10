@@ -3,6 +3,7 @@ package big.data.study.persist
 import java.util.{Properties, Date}
 
 import big.data.study.queues.TopicInitializer
+import big.data.study.queues.serializers.TwitsSerializer
 import org.apache.kafka.clients.producer.KafkaProducer
 import org.apache.kafka.clients.producer.ProducerConfig
 import org.apache.kafka.clients.producer.ProducerRecord
@@ -26,7 +27,7 @@ class WhiteTeam extends Persist{
     val producer = new KafkaProducer[String,(String,Date)](props)
 
     val key = "mykey1"
-    val producerRecord = new ProducerRecord[String,(String,Date)]("whiteTeam", key, tuple);
+    val producerRecord = new ProducerRecord[String,(String,Date)]("whiteTeam", key, tuple)
     producer.send(producerRecord)
 
     producer.close()

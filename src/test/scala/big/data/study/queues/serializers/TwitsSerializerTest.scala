@@ -1,7 +1,7 @@
-package big.data.study.persist
-
+package big.data.study.queues.serializers
 
 import big.data.study.fakes.DateFake
+import big.data.study.queues.serializers.TwitsSerializer
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{ShouldMatchers, WordSpec}
 
