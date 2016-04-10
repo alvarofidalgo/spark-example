@@ -31,7 +31,7 @@ object TopicInitializer extends Config{
                                            conf.getInt("kafka.zookeperSessionTimeout"),
                                            ZKStringSerializer)
 
-  def apply(): Unit ={
+  def apply(): TopicInitializer ={
       new TopicInitializer(zkClient)
   }
 }

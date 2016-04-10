@@ -1,17 +1,14 @@
 package big.data.study.doubles
 
-import java.text.SimpleDateFormat
 import java.util.Date
 
+import big.data.study.fakes.DateFake
 import twitter4j._
 
 
 class StatusDouble(text:String,dateFormat:String,sDate:String) extends Status{
 
-  override def getCreatedAt: Date = {
-    val formatter = new SimpleDateFormat(dateFormat)
-    formatter.parse(sDate)
-  }
+  override def getCreatedAt: Date = DateFake.toDate(dateFormat,sDate)
 
   override def getText: String = {
     text

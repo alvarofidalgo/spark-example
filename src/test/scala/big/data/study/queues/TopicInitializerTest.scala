@@ -7,10 +7,10 @@ import org.I0Itec.zkclient.ZkClient
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.{ShouldMatchers, WordSpec}
+import scala.collection.JavaConversions._
 
 import scala.util.{Try,Success,Failure}
-import org.apache.zookeeper.ZooKeeper
-//TODO : CREATE METHOD THAT
+
 
 @RunWith(classOf[JUnitRunner])
 class TopicInitializerTest extends WordSpec with ShouldMatchers with Config{
@@ -50,8 +50,8 @@ class TopicInitializerTest extends WordSpec with ShouldMatchers with Config{
   }
 
   private def checkTopic(topicName:String,numberTopics:Int) : Unit = {
-    val topics = zkClient.getChildren("/brokers/topics")
-    topics.size() shouldBe numberTopics
-    topics.get(0) shouldBe topicName
+    val topics = zkClient.getChildren("/brokers/topics").toSeq
+    topics.length shouldBe numberTopics
+    topics.head shouldBe topicName
   }
 }

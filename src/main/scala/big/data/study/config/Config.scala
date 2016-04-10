@@ -5,7 +5,6 @@ import com.typesafe.config.ConfigFactory
 
 
 trait Config {
-  lazy val conf =
-    ConfigFactory.load
+  lazy val conf = ConfigFactory.load
 
 }

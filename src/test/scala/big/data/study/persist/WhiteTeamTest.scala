@@ -4,7 +4,7 @@ import java.util.Date
 
 import org.scalatest.{ShouldMatchers, WordSpec}
 
-
+//TODO : TEST VALUE OF TOPIC
 class WhiteTeamTest extends WordSpec with ShouldMatchers{
 
 
@@ -13,7 +13,7 @@ class WhiteTeamTest extends WordSpec with ShouldMatchers{
 
       "Be message is sended " in  {
          val persist = new WhiteTeam()
-        persist.insert(("Real Madrid",new Date()))
+         persist.insert(("Real Madrid",new Date()))
       }
   }
 
