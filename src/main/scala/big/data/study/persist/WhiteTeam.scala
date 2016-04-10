@@ -7,8 +7,6 @@ import big.data.study.queues.serializers.{TwitDateSerializer, TwitsSerializer}
 import org.apache.kafka.clients.producer.KafkaProducer
 import org.apache.kafka.clients.producer.ProducerConfig
 import org.apache.kafka.clients.producer.ProducerRecord
-import org.apache.kafka.common.serialization.StringSerializer
-
 
 class WhiteTeam extends Persist{
 
