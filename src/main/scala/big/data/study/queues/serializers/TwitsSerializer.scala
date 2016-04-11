@@ -3,16 +3,23 @@ package big.data.study.queues.serializers
 import java.util
 import java.util.Date
 
-import big.data.study.config.Config
+
 import org.apache.kafka.common.serialization.Serializer
 
 
-class TwitsSerializer extends Serializer[(String,Date)] with Config{
+class TwitsSerializer extends Serializer[(String,Date)]{
 
-  override def configure(map: util.Map[String, _], b: Boolean): Unit = {}
+  private val encoder =  collection.mutable.Seq("")
+
+  override def configure(map: util.Map[String, _], b: Boolean): Unit = {
+    val head = 0
+    val encoding = map.get("kafka.serializer.encoding").asInstanceOf[String]
+    encoder(head)=encoding
+
+  }
 
   override def serialize(topic: String, twit: (String, Date)): Array[Byte] = {
-    val encoding = conf.getString("kafka.serializer.encoding")
+    val encoding = encoder.head
     val message = twit._1
     val date = twit._2
     date.getTime.toString.getBytes(encoding) ++ message.getBytes(encoding)
