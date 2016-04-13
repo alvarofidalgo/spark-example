@@ -16,7 +16,7 @@
  
  https://hub.docker.com/r/spotify/kafka/
  
- To run docker run  -p 2181:2181 -p 9092:9092 --env ADVERTISED_HOST=192.168.99.100 IMAGE spotify/kafka
+ To run : docker run  -p 2181:2181 -p 9092:9092 --env ADVERTISED_HOST=192.168.99.100 spotify/kafka
  
  Change test/resources/application.conf and configure this parameters :
  

@@ -18,7 +18,7 @@ class TopicInitializer (zkClient:ZkClient){
     Try(AdminUtils.createTopic(zkClient, topic, 10, 1, new Properties())) match {
       case Success(_)=>
       case Failure(ex:TopicExistsException)=>
-      case Failure(ex) => throw new RuntimeException("unexpected error")
+      case Failure(ex) => throw new RuntimeException("unexpected error",ex)
     }
   }
 }

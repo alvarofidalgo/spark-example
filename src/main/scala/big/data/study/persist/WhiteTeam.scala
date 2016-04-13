@@ -17,12 +17,14 @@ class WhiteTeam extends Persist{
   props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,classOf[TwitsSerializer].getName)
   props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,classOf[TwitDateSerializer].getName)
   props.put(ProducerConfig.ACKS_CONFIG,"1")
+  props.put("kafka.serializer.encoding","UTF-8")
+  val producer = new KafkaProducer[Date,(String,Date)](props)
 
 
   override def insert(tuple: (String, Date)): Unit = {
 
     topicInitializer.initTopic("whiteTeam")
-    val producer = new KafkaProducer[Date,(String,Date)](props)
+
 
 
     val producerRecord = new ProducerRecord[Date,(String,Date)]("whiteTeam", tuple._2, tuple)
