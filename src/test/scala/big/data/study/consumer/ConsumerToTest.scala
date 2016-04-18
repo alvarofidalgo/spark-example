@@ -1,12 +1,12 @@
 package big.data.study.consumer
 
 import java.nio.ByteBuffer
-import java.util.{TimerTask,Timer, Date, Properties}
+import java.util.{Timer, Date, Properties}
 
 
 import scala.concurrent.ExecutionContext.Implicits._
 
-import kafka.consumer.{KafkaStream, ConsumerConfig, Consumer}
+import kafka.consumer.{ConsumerConfig, Consumer}
 
 import scala.concurrent._
 
@@ -37,23 +37,14 @@ class ConsumerToTest {
     Future {
       val stream  = streams.toList(first)
       val it = stream.iterator()
-      while (it.hasNext()) {
-        val next = it.next()
-        if (isEquals(next.key(),key)) {
-          new String(next.message())
-        }else{
-          ""
-        }
-
-      }
-      ""
+      val result = it.takeWhile(a=>isEquals(a.key(),key)).map(b=> new String(b.message()))
+      result.next()
     }
   }
 
 
   def isEquals(bytes: Array[Byte],date:Date):Boolean ={
-    val a = ByteBuffer.allocate(64).putLong(date.getTime).array()
-    a == bytes
+    ByteBuffer.allocate(64).putLong(date.getTime).array().deep == bytes.deep
   }
 
 }
