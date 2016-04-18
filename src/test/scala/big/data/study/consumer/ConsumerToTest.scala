@@ -34,24 +34,26 @@ class ConsumerToTest {
     val topicCountMap = Map("whiteTeam" -> id)
     val consumerMap = consumer.createMessageStreams(topicCountMap)
     val streams = consumerMap.get("whiteTeam").get
-    val result = Promise[String]
-    timer.schedule(new TimerTask() {
-      def run() = {
+    Future {
+      val stream  = streams.toList(first)
+      val it = stream.iterator()
+      while (it.hasNext()) {
+        val next = it.next()
+        if (isEquals(next.key(),key)) {
+          new String(next.message())
+        }else{
+          ""
+        }
 
-        val stream  = streams.toList(first)
-        val it = stream.iterator()
-        it.foreach(a=>{
-          if (isEquals(a.key(),key))
-            result.success(new String(a.message()))
-        })
       }
-    }, 15)
-    result.future
+      ""
+    }
   }
 
 
   def isEquals(bytes: Array[Byte],date:Date):Boolean ={
-    ByteBuffer.allocate(64).putLong(date.getTime).array() == bytes
+    val a = ByteBuffer.allocate(64).putLong(date.getTime).array()
+    a == bytes
   }
 
 }
