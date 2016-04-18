@@ -22,14 +22,10 @@ class WhiteTeam extends Persist{
 
 
   override def insert(tuple: (String, Date)): Unit = {
-
     topicInitializer.initTopic("whiteTeam")
-
-
-
     val producerRecord = new ProducerRecord[Date,(String,Date)]("whiteTeam", tuple._2, tuple)
-    producer.send(producerRecord)
 
+    producer.send(producerRecord)
     producer.close()
   }
 }
