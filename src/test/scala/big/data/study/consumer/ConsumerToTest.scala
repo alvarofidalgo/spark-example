@@ -1,12 +1,15 @@
 package big.data.study.consumer
 
 import java.nio.ByteBuffer
+import java.util
 import java.util.{Timer, Date, Properties}
 
 
+import big.data.study.deserializer.{TupleDecoderToTest, KeyDecoderToTest}
+
 import scala.concurrent.ExecutionContext.Implicits._
 
-import kafka.consumer.{ConsumerConfig, Consumer}
+import kafka.consumer.{KafkaStream, ConsumerConfig, Consumer}
 
 import scala.concurrent._
 
@@ -23,28 +26,25 @@ class ConsumerToTest {
   props.put("zookeeper.session.timeout.ms", "400")
   props.put("zookeeper.sync.time.ms", "200")
   props.put("auto.commit.interval.ms", "1000")
-  val config = new ConsumerConfig(props)
-  val consumer = Consumer.create(config)
-  val timer = new Timer
+  private val config = new ConsumerConfig(props)
+  private val consumer = Consumer.create(config)
 
-
-  def consume(key:Date): Future[String] = {
-    val first = 0
+  def consume(key:Date): Future[(Date,String)] = {
     val id = 1
-    val topicCountMap = Map("whiteTeam" -> id)
-    val consumerMap = consumer.createMessageStreams(topicCountMap)
-    val streams = consumerMap.get("whiteTeam").get
+    val consumerMap = consumer.createMessageStreams(Map("whiteTeam" -> id),new KeyDecoderToTest,new TupleDecoderToTest)
+    val stream =consumerMap.get("whiteTeam").get.head
     Future {
-      val stream  = streams.toList(first)
-      val it = stream.iterator()
-      val result = it.takeWhile(a=>isEquals(a.key(),key)).map(b=> new String(b.message()))
-      result.next()
+     stream.iterator()
+            .filter(a=> isEquals(a.key(),key))
+            .map(streamMessage=>streamMessage.message())
+            .next()
+
+
     }
   }
 
-
-  def isEquals(bytes: Array[Byte],date:Date):Boolean ={
-    ByteBuffer.allocate(64).putLong(date.getTime).array().deep == bytes.deep
+  def isEquals(date:Date,key:Date):Boolean ={
+    date.equals(key)
   }
 
 }

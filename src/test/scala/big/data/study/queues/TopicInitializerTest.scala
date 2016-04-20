@@ -50,8 +50,9 @@ class TopicInitializerTest extends WordSpec with ShouldMatchers with Config{
   }
 
   private def checkTopic(topicName:String,numberTopics:Int) : Unit = {
-    val topics = zkClient.getChildren("/brokers/topics").toSeq
-    topics.length shouldBe numberTopics
-    topics.head shouldBe topicName
+    val allTopics = zkClient.getChildren("/brokers/topics").toSeq
+    val topic =allTopics.filter(topic=>topic==topicName)
+    topic.length shouldBe numberTopics
+    topic.head shouldBe topicName
   }
 }

@@ -27,3 +27,4 @@ class TwitsSerializer extends Serializer[(String,Date)]{
 
   override def close(): Unit = {}
 }
+

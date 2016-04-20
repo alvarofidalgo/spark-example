@@ -9,13 +9,11 @@ import org.scalatest.{ShouldMatchers, WordSpec}
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 
-
 class WhiteTeamTest extends WordSpec with ShouldMatchers{
 
   private val consumer = new ConsumerToTest
 
   " We can insert data in WhiteTeam topic and result " should {
-
 
       "Be message is sended " in  {
          val date = new Date()
@@ -23,7 +21,8 @@ class WhiteTeamTest extends WordSpec with ShouldMatchers{
          val result = consumer.consume(date)
          persist.insert(("Real Madrid",date))
          Await.result(result,Duration.Inf)
-         val a = result
+         result.value.get.get._2 shouldBe "Real Madrid"
+
 
       }
   }
