@@ -8,7 +8,7 @@ import org.apache.kafka.clients.producer.KafkaProducer
 import org.apache.kafka.clients.producer.ProducerConfig
 import org.apache.kafka.clients.producer.ProducerRecord
 
-class WhiteTeam extends Persist{
+class KafkaPersist (topic:String) extends Persist{
 
   private val props = new Properties()
   private val topicInitializer = TopicInitializer()
@@ -22,8 +22,8 @@ class WhiteTeam extends Persist{
 
 
   override def insert(tuple: (String, Date)): Unit = {
-    topicInitializer.initTopic("whiteTeam")
-    val producerRecord = new ProducerRecord[Date,(String,Date)]("whiteTeam", tuple._2, tuple)
+    topicInitializer.initTopic(topic)
+    val producerRecord = new ProducerRecord[Date,(String,Date)](topic, tuple._2, tuple)
 
     producer.send(producerRecord)
     producer.close()

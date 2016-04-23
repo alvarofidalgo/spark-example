@@ -18,8 +18,8 @@ class PersistFactory(strategySeq:Seq[PersistStrategy]) {
 
 object PersistFactory {
 
-  private def seq = Seq(new PersistStrategy(PersistPriority(1,new WhiteTeam),"realmadrid"),
-                        new PersistStrategy(PersistPriority(1,new BlueGarnetTeam),"barcelona"),
+  private def seq = Seq(new PersistStrategy(PersistPriority(1,new KafkaPersist("whiteTeam")),"realmadrid"),
+                        new PersistStrategy(PersistPriority(1,new KafkaPersist("blueGarnetTeam")),"barcelona"),
                         new PersistStrategy(PersistPriority(2,new AllTeamsPersist),"realmadrid","barcelona"),
                         new PersistStrategy(PersistPriority(0,new NotDefinedPersist)))
 

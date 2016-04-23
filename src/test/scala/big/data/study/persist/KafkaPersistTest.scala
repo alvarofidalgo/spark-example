@@ -12,7 +12,7 @@ import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 
 @RunWith(classOf[JUnitRunner])
-class WhiteTeamTest extends WordSpec with ShouldMatchers{
+class KafkaPersistTest extends WordSpec with ShouldMatchers{
 
   private val consumer = new ConsumerToTest
 
@@ -20,7 +20,7 @@ class WhiteTeamTest extends WordSpec with ShouldMatchers{
 
       "Be message is sended " in  {
          val date = new Date()
-         val persist = new WhiteTeam()
+         val persist = new KafkaPersist("whiteTeam")
          val result = consumer.consume(date)
          persist.insert(("Real Madrid",date))
          Await.result(result,Duration.Inf)
