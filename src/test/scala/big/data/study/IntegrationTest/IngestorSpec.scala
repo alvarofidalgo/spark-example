@@ -12,6 +12,7 @@ import twitter4j.Status
 
 //TODO : MAKE CONSUMER TO TEST
 //TODO : MEKE PRODUCER IN TEST
+//TODO : THIS TEST WILL BE REMOVED
 class IngestorSpec extends WordSpec with ShouldMatchers with  Eventually {
 
   implicit override val patienceConfig = PatienceConfig(timeout = scaled(Span(1200, Millis)))

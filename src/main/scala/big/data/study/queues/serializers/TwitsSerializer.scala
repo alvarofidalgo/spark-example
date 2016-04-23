@@ -1,5 +1,6 @@
 package big.data.study.queues.serializers
 
+import java.nio.ByteBuffer
 import java.util
 import java.util.Date
 
@@ -22,7 +23,7 @@ class TwitsSerializer extends Serializer[(String,Date)]{
     val encoding = encoder.head
     val message = twit._1
     val date = twit._2
-    date.getTime.toString.getBytes(encoding) ++ message.getBytes(encoding)
+    Encoder.toByteArray(date) ++ message.getBytes(encoding)
   }
 
   override def close(): Unit = {}

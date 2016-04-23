@@ -1,19 +1,16 @@
 package big.data.study.consumer
 
-import java.nio.ByteBuffer
-import java.util
-import java.util.{Timer, Date, Properties}
+import big.data.study.deserializer.KeyDecoderToTest
+import big.data.study.deserializer.TupleDecoderToTest
 
+import java.util.Date
+import java.util.Properties
 
-import big.data.study.deserializer.{TupleDecoderToTest, KeyDecoderToTest}
+import kafka.consumer.Consumer
+import kafka.consumer.ConsumerConfig
 
-import scala.concurrent.ExecutionContext.Implicits._
-
-import kafka.consumer.{KafkaStream, ConsumerConfig, Consumer}
-
-import scala.concurrent._
-
-
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 
 class ConsumerToTest {
@@ -31,7 +28,7 @@ class ConsumerToTest {
 
   def consume(key:Date): Future[(Date,String)] = {
     val id = 1
-    val consumerMap = consumer.createMessageStreams(Map("whiteTeam" -> id),new KeyDecoderToTest,new TupleDecoderToTest)
+    val consumerMap = consumer.createMessageStreams(Map(("whiteTeam",id)),new KeyDecoderToTest,new TupleDecoderToTest)
     val stream =consumerMap.get("whiteTeam").get.head
     Future {
      stream.iterator()

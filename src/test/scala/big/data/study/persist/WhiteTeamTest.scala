@@ -4,11 +4,14 @@ package big.data.study.persist
 import java.util.Date
 
 import big.data.study.consumer.ConsumerToTest
+import org.junit.runner.RunWith
+import org.scalatest.junit.JUnitRunner
 import org.scalatest.{ShouldMatchers, WordSpec}
 
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 
+@RunWith(classOf[JUnitRunner])
 class WhiteTeamTest extends WordSpec with ShouldMatchers{
 
   private val consumer = new ConsumerToTest
@@ -22,8 +25,6 @@ class WhiteTeamTest extends WordSpec with ShouldMatchers{
          persist.insert(("Real Madrid",date))
          Await.result(result,Duration.Inf)
          result.value.get.get._2 shouldBe "Real Madrid"
-
-
       }
   }
 
