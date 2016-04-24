@@ -8,12 +8,12 @@ import org.scalatest.{ShouldMatchers, WordSpec}
 class PersistFactoryTest extends WordSpec with ShouldMatchers{
 
   private  val firstElement = 0
-  private  val whitePersist =  PersistPriority(1,new KafkaPersist("whiteTeam"))
-  private  val blueGarnetTeam =  PersistPriority(1,new KafkaPersist("blueGarnet"))
+  private  val whitePersist =  "whiteTeam"
+  private  val blueGarnetTeam =  "blueGarnet"
   private def seq = Seq(new PersistStrategy(whitePersist,"realmadrid"),
-                        new PersistStrategy(blueGarnetTeam,"barcelona"),
-                        new PersistStrategy(PersistPriority(2,new AllTeamsPersist),"realmadrid","barcelona"),
-                         new PersistStrategy(PersistPriority(0,new NotDefinedPersist)))
+                        new PersistStrategy(blueGarnetTeam,"barcelona"))
+                    //    new PersistStrategy(PersistPriority(2,new AllTeamsPersist),"realmadrid","barcelona"),
+                    //     new PersistStrategy(PersistPriority(0,new NotDefinedPersist)))
   private val factory = new PersistFactory(seq)
 
   " When text contain only element search result " should {
@@ -21,21 +21,21 @@ class PersistFactoryTest extends WordSpec with ShouldMatchers{
 
       " be whiteTeam topic  of KafkaPesist selected when is Real Madrid" in {
         val message = "Real Madrid"
-        factory.getPersist(message)(firstElement) shouldBe whitePersist.persist
+        factory.getPersist(message)(firstElement) shouldBe whitePersist
       }
 
       " be blueGarnet topic  of KafkaPesist selected  when is Barcelona " in  {
-        factory.getPersist("Barcelona")(firstElement) shouldBe blueGarnetTeam.persist
+        factory.getPersist("Barcelona")(firstElement) shouldBe blueGarnetTeam
       }
 
       " be whiteTeam topic  of KafkaPesist when is Real madrid " in {
         val message = "Real madrid"
-        factory.getPersist(message)(firstElement) shouldBe whitePersist.persist
+        factory.getPersist(message)(firstElement) shouldBe whitePersist
       }
 
       " be whiteTeam topic  of KafkaPesist when is Real     Madrid" in  {
         val message = "Real     Madrid"
-        factory.getPersist(message)(firstElement) shouldBe whitePersist.persist
+        factory.getPersist(message)(firstElement) shouldBe whitePersist
       }
   }
 
@@ -43,7 +43,7 @@ class PersistFactoryTest extends WordSpec with ShouldMatchers{
 
       " be whiteTeam topic  of KafkaPesist when is In Real Madrid More" in {
         val message = "In Real Madrid More"
-        factory.getPersist(message)(firstElement) shouldBe whitePersist.persist
+        factory.getPersist(message)(firstElement) shouldBe whitePersist
       }
 
       " be AllTeamsPersist instance when is Real Madrid versus Barcelona very good" in {
