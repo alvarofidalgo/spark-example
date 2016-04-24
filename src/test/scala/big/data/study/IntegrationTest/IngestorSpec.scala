@@ -10,9 +10,7 @@ import org.scalatest.time.{Millis, Span}
 import org.scalatest.{ShouldMatchers, WordSpec}
 import twitter4j.Status
 
-//TODO : MAKE CONSUMER TO TEST
-//TODO : MEKE PRODUCER IN TEST
-//TODO : THIS TEST WILL BE REMOVED
+
 class IngestorSpec extends WordSpec with ShouldMatchers with  Eventually {
 
   implicit override val patienceConfig = PatienceConfig(timeout = scaled(Span(1200, Millis)))
@@ -21,14 +19,16 @@ class IngestorSpec extends WordSpec with ShouldMatchers with  Eventually {
 
     val sc = new StreamingContextFake[Status]("org.apache.spark.util.ManualClock")
     val clock = new ClockWrapper(sc)
+    val advance = 1
 
 
     new Ingestor(new KafkaPersistBuilder()).ingest(sc.createDStream)
 
-    " be that WhiteTeam topic is filled " in {
+    " be that WhiteTeam topic is filled if message contain Real Madrid" in {
+      val status = new StatusDouble("Real Madrid","MM/dd/yy","01/01/16")
       sc.start()
-      sc.addDataInRDD(Seq(new StatusDouble("Real Madrid","MM/dd/yy","01/01/16")))
-      clock.advance(1)
+      sc.addDataInRDD(Seq(status))
+      clock.advance(advance)
       eventually{
         val status = new StatusDouble("Real Madrid","MM/dd/yy","01/01/16")
 

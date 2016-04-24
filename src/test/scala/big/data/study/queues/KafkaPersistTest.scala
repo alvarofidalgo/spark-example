@@ -1,10 +1,8 @@
-package big.data.study.persist
-
+package big.data.study.queues
 
 import java.util.Date
 
 import big.data.study.consumer.ConsumerToTest
-import big.data.study.queues.KafkaPersist
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.{ShouldMatchers, WordSpec}

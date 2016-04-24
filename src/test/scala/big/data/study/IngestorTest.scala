@@ -16,6 +16,7 @@ import big.data.study.fakes.{StreamingContextFake, ClockWrapper}
 
 import org.mockito.Matchers.argThat
 import org.mockito.Mockito.verify
+import org.mockito.Mockito.times
 
 import org.scalatest.concurrent.Eventually
 import org.scalatest.time.Millis
@@ -31,27 +32,41 @@ class IngestorTest extends WordSpec  with PersistBuilderMock
 
 
   implicit override val patienceConfig = PatienceConfig(timeout = scaled(Span(1200, Millis)))
+  private val sc = new StreamingContextFake[Status]("org.apache.spark.util.ManualClock")
+  private val clock = new ClockWrapper(sc)
+  private val persist = mock[Persist]
+  private val advance = 1
 
-  "When " should {
+  "We want to send tweet to persist and result  " should {
 
-    val sc = new StreamingContextFake[Status]("org.apache.spark.util.ManualClock")
-    val clock = new ClockWrapper(sc)
-    val persist = mock[Persist]
+
     val persistBuilder = mockBuilder("Real Madrid",persist)
 
     new Ingestor(persistBuilder).ingest(sc.createDStream)
 
-    " be send one element to persist " in {
-      sc.start()
+    sc.start()
+    " be called one time with one twit in window " in {
+
       sc.addDataInRDD(Seq(new StatusDouble("Real Madrid","MM/dd/yy","01/01/16")))
-      clock.advance(1)
+      clock.advance(advance)
       eventually{
         val status = new StatusDouble("Real Madrid","MM/dd/yy","01/01/16")
         verify(persist).insert(argThat(new TupleMatcher(status.getText,status.getCreatedAt)))
       }
+    }
+
+    " be called more times with more twits in window " in {
+      sc.addDataInRDD(Seq(new StatusDouble("Bremem","MM/dd/yy","01/01/16"),
+                           new StatusDouble("Bremem","MM/dd/yy","01/01/16")))
+      clock.advance(advance)
+      eventually{
+        val status = new StatusDouble("Bremem","MM/dd/yy","01/01/16")
+        verify(persist,times(2)).insert(argThat(new TupleMatcher(status.getText,status.getCreatedAt)))
+      }
       sc.stop()
     }
   }
+
 }
 
 
