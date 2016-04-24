@@ -5,7 +5,7 @@ package big.data.study
 
 import big.data.study.doubles.StatusDouble
 import big.data.study.matchers.TupleMatcher
-import big.data.study.mocks.PersistFactoryMock
+import big.data.study.mocks.PersistBuilderMock
 import big.data.study.persist.Persist
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
@@ -24,7 +24,7 @@ import twitter4j.Status
 
 
 @RunWith(classOf[JUnitRunner])
-class IngestorTest extends WordSpec  with PersistFactoryMock
+class IngestorTest extends WordSpec  with PersistBuilderMock
                                      with ShouldMatchers
                                      with BeforeAndAfterAll
                                      with  Eventually {
@@ -37,9 +37,9 @@ class IngestorTest extends WordSpec  with PersistFactoryMock
     val sc = new StreamingContextFake[Status]("org.apache.spark.util.ManualClock")
     val clock = new ClockWrapper(sc)
     val persist = mock[Persist]
-    val persistFactory = mockFactory("Real Madrid",persist)
+    val persistBuilder = mockBuilder("Real Madrid",persist)
 
-    new Ingestor(persistFactory).ingest(sc.createDStream)
+    new Ingestor(persistBuilder).ingest(sc.createDStream)
 
     " be send one element to persist " in {
       sc.start()

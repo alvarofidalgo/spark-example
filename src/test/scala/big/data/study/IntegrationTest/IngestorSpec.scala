@@ -4,7 +4,7 @@ package big.data.study.IntegrationTest
 import big.data.study.Ingestor
 import big.data.study.doubles.StatusDouble
 import big.data.study.fakes.{StreamingContextFake, ClockWrapper}
-import big.data.study.persist.PersistFactory
+import big.data.study.queues.KafkaPersistBuilder
 import org.scalatest.concurrent.Eventually
 import org.scalatest.time.{Millis, Span}
 import org.scalatest.{ShouldMatchers, WordSpec}
@@ -23,7 +23,7 @@ class IngestorSpec extends WordSpec with ShouldMatchers with  Eventually {
     val clock = new ClockWrapper(sc)
 
 
-    new Ingestor(PersistFactory()).ingest(sc.createDStream)
+    new Ingestor(new KafkaPersistBuilder()).ingest(sc.createDStream)
 
     " be that WhiteTeam topic is filled " in {
       sc.start()

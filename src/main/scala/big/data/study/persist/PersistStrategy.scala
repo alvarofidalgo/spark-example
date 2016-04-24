@@ -8,7 +8,4 @@ class PersistStrategy [T](registered:T,conditions:String*){
         case true => Seq(registered) ++ last
         case false =>  last
      }
-
-
-
 }

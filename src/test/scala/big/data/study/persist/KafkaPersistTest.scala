@@ -4,6 +4,7 @@ package big.data.study.persist
 import java.util.Date
 
 import big.data.study.consumer.ConsumerToTest
+import big.data.study.queues.KafkaPersist
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.{ShouldMatchers, WordSpec}
@@ -20,7 +21,7 @@ class KafkaPersistTest extends WordSpec with ShouldMatchers{
 
       "Be message is sended " in  {
          val date = new Date()
-         val persist = new KafkaPersist("whiteTeam")
+         val persist = KafkaPersist("whiteTeam")
          val result = consumer.consume(date)
          persist.insert(("Real Madrid",date))
          Await.result(result,Duration.Inf)
