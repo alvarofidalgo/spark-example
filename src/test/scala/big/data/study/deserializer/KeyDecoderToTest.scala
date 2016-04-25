@@ -10,6 +10,7 @@ class KeyDecoderToTest extends Decoder[Date]{
 
   override def fromBytes(bytes: Array[Byte]): Date = {
     val time = Longs.fromByteArray(bytes)
-    new Date(time)
+    val date =new Date(time)
+    date
   }
 }

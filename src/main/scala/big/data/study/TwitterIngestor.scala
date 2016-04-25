@@ -1,7 +1,7 @@
 package big.data.study
 
-import big.data.study.persist.PersistFactory
 import big.data.study.config.Config
+import big.data.study.queues.KafkaPersistBuilder
 import org.apache.spark.SparkConf
 import org.apache.spark.streaming.twitter.TwitterUtils
 import org.apache.spark.streaming.{Seconds, StreamingContext}
@@ -18,7 +18,7 @@ class TwitterIngestor extends Config{
   def ingestTwiterTags(): Unit ={
 
     val filters = Array("Real Madrid","Barcelona")
-    new Ingestor(PersistFactory())
+    new Ingestor(new KafkaPersistBuilder())
                 .ingest(
                      TwitterUtils.createStream(context,Some(twitterAuthorized.getAuthorization),filters)
                   )

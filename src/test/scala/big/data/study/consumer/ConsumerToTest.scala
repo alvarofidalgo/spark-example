@@ -1,22 +1,19 @@
 package big.data.study.consumer
 
-import java.nio.ByteBuffer
-import java.util
-import java.util.{Timer, Date, Properties}
+import big.data.study.deserializer.KeyDecoderToTest
+import big.data.study.deserializer.TupleDecoderToTest
+
+import java.util.Date
+import java.util.Properties
+
+import kafka.consumer.Consumer
+import kafka.consumer.ConsumerConfig
+
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 
-import big.data.study.deserializer.{TupleDecoderToTest, KeyDecoderToTest}
-
-import scala.concurrent.ExecutionContext.Implicits._
-
-import kafka.consumer.{KafkaStream, ConsumerConfig, Consumer}
-
-import scala.concurrent._
-
-
-
-
-class ConsumerToTest {
+class ConsumerToTest(topics:Map[String,Int]) {
 
   val props = new Properties()
 
@@ -28,11 +25,11 @@ class ConsumerToTest {
   props.put("auto.commit.interval.ms", "1000")
   private val config = new ConsumerConfig(props)
   private val consumer = Consumer.create(config)
+  private val consumerMap = consumer.createMessageStreams(topics,new KeyDecoderToTest,new TupleDecoderToTest)
 
-  def consume(key:Date): Future[(Date,String)] = {
+  def consume(key:Date,topicName:String): Future[(Date,String)] = {
     val id = 1
-    val consumerMap = consumer.createMessageStreams(Map("whiteTeam" -> id),new KeyDecoderToTest,new TupleDecoderToTest)
-    val stream =consumerMap.get("whiteTeam").get.head
+    val stream =consumerMap.get(topicName).get.head
     Future {
      stream.iterator()
             .filter(a=> isEquals(a.key(),key))

@@ -10,30 +10,31 @@ class PersistStrategyTest extends WordSpec with ShouldMatchers{
 
   private val firstCondition ="first"
   private val secondCondition = "second"
-  private val strategy = new PersistStrategy(PersistPriority(0,new RegisteredPersist), firstCondition,secondCondition)
+  private val namePersist ="namePersist"
+  private val strategy = new PersistStrategy(namePersist, firstCondition,secondCondition)
 
 
   "We can concatenate Persist and result " should {
-    val existPersist = Seq(PersistPriority(0,new DefaultPersist))
+    val existPersist = Seq("existPersist")
 
      " be sequence with registered persist and exist persist when complain all conditions" in {
 
-         val expectedLength = 2
+         val expected = Seq(namePersist) ++ existPersist
          val persistSeq = strategy.persistOf(firstCondition.concat(secondCondition),existPersist)
-         persistSeq.size shouldBe  expectedLength
+         persistSeq shouldBe  expected
      }
 
     " be sequence with exist persist when only complain one condition " in  {
-      val expectedLength = 1
+      val expected = existPersist
       val persistSeq = strategy.persistOf(firstCondition,existPersist)
-      persistSeq.size shouldBe expectedLength
+      persistSeq shouldBe expected
     }
 
      " be sequence with exist persist when  not complain all conditions " in  {
         val notMatch = "notMatch"
-       val expectedLength = 1
+       val expected = existPersist
        val persistSeq = strategy.persistOf(notMatch,existPersist)
-       persistSeq.size shouldBe expectedLength
+       persistSeq shouldBe expected
      }
   }
 

@@ -19,10 +19,9 @@ class TwitsSerializer extends Serializer[(String,Date)]{
   }
 
   override def serialize(topic: String, twit: (String, Date)): Array[Byte] = {
-    val encoding = encoder.head
     val message = twit._1
     val date = twit._2
-    date.getTime.toString.getBytes(encoding) ++ message.getBytes(encoding)
+    Encoder.toByteArray(date) ++ message.getBytes(encoder.head)
   }
 
   override def close(): Unit = {}
