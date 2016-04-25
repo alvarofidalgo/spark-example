@@ -29,7 +29,6 @@ class IngestorSpec extends WordSpec with ShouldMatchers with BeforeAndAfterAll w
   private val sc = new StreamingContextFake[Status]("org.apache.spark.util.ManualClock")
   private val clock = new ClockWrapper(sc)
   private val advance = 1
-  private val consumer = new ConsumerToTest(Map((blueGarnetTeamTopic,idOne),(whiteTeamTopicName,idTwo)))
 
   override  def beforeAll(): Unit ={
     new Ingestor(new KafkaPersistBuilder()).ingest(sc.createDStream)
@@ -45,30 +44,34 @@ class IngestorSpec extends WordSpec with ShouldMatchers with BeforeAndAfterAll w
 
     val format ="MM/dd/yy"
     " be  WhiteTeam topic is filled if message contain Real Madrid" in {
-
       val message ="Real Madrid in message"
       val sDate ="01/01/24"
       val result = runMicroBatch(message,whiteTeamTopicName,sDate)
-      Await.result(result,Duration.Inf)
-      result.value.get.get._1 shouldBe DateFake.toDate(format,sDate)
-      result.value.get.get._2 shouldBe message
+      eventually {
+        result.value.get.get._1 shouldBe DateFake.toDate(format, sDate)
+        result.value.get.get._2 shouldBe message
+      }
 
     }
 
     "be blueGarnetTeam topic is filled if message containf barcelona " in {
-
       val message ="barcelona in message"
       val sDate ="03/03/22"
       val result = runMicroBatch(message,blueGarnetTeamTopic,sDate)
-      Await.result(result,Duration.Inf)
-      result.value.get.get._1 shouldBe DateFake.toDate(format,sDate)
-      result.value.get.get._2 shouldBe message
+      eventually {
+        result.value.get.get._1 shouldBe DateFake.toDate(format, sDate)
+        result.value.get.get._2 shouldBe message
+      }
 
     }
 
   }
 
-  private def runMicroBatch(message:String,topicName:String,sDate:String):Future[(Date,String)]={
+  private def runMicroBatch(message:String,
+                            topicName:String,
+                            sDate:String):Future[(Date,String)]={
+    val id =1
+    val consumer = new ConsumerToTest(Map((topicName,id)))
     val status = new StatusDouble(message,"MM/dd/yy",sDate)
     val date = DateFake.toDate("MM/dd/yy",sDate)
     val result = consumer.consume(date,topicName)
