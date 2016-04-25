@@ -15,15 +15,13 @@ import org.scalatest.time.{Millis, Span}
 import org.scalatest.{BeforeAndAfterAll, ShouldMatchers, WordSpec}
 import twitter4j.Status
 
-import scala.concurrent.duration.Duration
-import scala.concurrent.{Await, Future}
+import scala.concurrent.Future
 
 @RunWith(classOf[JUnitRunner])
 class IngestorSpec extends WordSpec with ShouldMatchers with BeforeAndAfterAll with Eventually {
 
   implicit override val patienceConfig = PatienceConfig(timeout = scaled(Span(1200, Millis)))
-  private val idOne= 1
-  private val idTwo=2
+
   private val whiteTeamTopicName ="whiteTeam"
   private val blueGarnetTeamTopic = "blueGarnetTeam"
   private val sc = new StreamingContextFake[Status]("org.apache.spark.util.ManualClock")
@@ -67,9 +65,7 @@ class IngestorSpec extends WordSpec with ShouldMatchers with BeforeAndAfterAll w
 
   }
 
-  private def runMicroBatch(message:String,
-                            topicName:String,
-                            sDate:String):Future[(Date,String)]={
+  private def runMicroBatch(message:String,topicName:String,sDate:String):Future[(Date,String)]={
     val id =1
     val consumer = new ConsumerToTest(Map((topicName,id)))
     val status = new StatusDouble(message,"MM/dd/yy",sDate)
