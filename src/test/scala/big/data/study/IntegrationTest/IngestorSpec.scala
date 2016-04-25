@@ -15,7 +15,8 @@ import org.scalatest.time.{Millis, Span}
 import org.scalatest.{BeforeAndAfterAll, ShouldMatchers, WordSpec}
 import twitter4j.Status
 
-import scala.concurrent.Future
+import scala.concurrent.duration.Duration
+import scala.concurrent.{Await, Future}
 
 @RunWith(classOf[JUnitRunner])
 class IngestorSpec extends WordSpec with ShouldMatchers with BeforeAndAfterAll with Eventually {
@@ -28,7 +29,7 @@ class IngestorSpec extends WordSpec with ShouldMatchers with BeforeAndAfterAll w
   private val sc = new StreamingContextFake[Status]("org.apache.spark.util.ManualClock")
   private val clock = new ClockWrapper(sc)
   private val advance = 1
-  private val consumer = new ConsumerToTest(Map((whiteTeamTopicName,idOne),(blueGarnetTeamTopic,idTwo)))
+  private val consumer = new ConsumerToTest(Map((blueGarnetTeamTopic,idOne),(whiteTeamTopicName,idTwo)))
 
   override  def beforeAll(): Unit ={
     new Ingestor(new KafkaPersistBuilder()).ingest(sc.createDStream)
@@ -48,21 +49,20 @@ class IngestorSpec extends WordSpec with ShouldMatchers with BeforeAndAfterAll w
       val message ="Real Madrid in message"
       val sDate ="01/01/24"
       val result = runMicroBatch(message,whiteTeamTopicName,sDate)
-      eventually {
-        result.value.get.get._1 shouldBe DateFake.toDate(format,sDate)
-        result.value.get.get._2 shouldBe message
-      }
+      Await.result(result,Duration.Inf)
+      result.value.get.get._1 shouldBe DateFake.toDate(format,sDate)
+      result.value.get.get._2 shouldBe message
+
     }
 
     "be blueGarnetTeam topic is filled if message containf barcelona " in {
 
-      val message ="barcelona"
-      val sDate ="02/02/22"
+      val message ="barcelona in message"
+      val sDate ="03/03/22"
       val result = runMicroBatch(message,blueGarnetTeamTopic,sDate)
-      eventually {
-        result.value.get.get._1 shouldBe DateFake.toDate(format,sDate)
-        result.value.get.get._2 shouldBe message
-      }
+      Await.result(result,Duration.Inf)
+      result.value.get.get._1 shouldBe DateFake.toDate(format,sDate)
+      result.value.get.get._2 shouldBe message
 
     }
 

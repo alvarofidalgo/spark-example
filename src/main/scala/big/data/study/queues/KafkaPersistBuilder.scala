@@ -10,8 +10,9 @@ class KafkaPersistBuilder extends PersistBuilder{
     val whiteTeam = "whiteTeam"
     val blueGarnetTeam ="blueGarnetTeam"
     val defaultNameTopic ="notRecognize"
-    val nameTopic =new TopicNameBuilder(Seq(new PersistStrategy(whiteTeam,"realmadrid"),
-                                            new PersistStrategy(blueGarnetTeam,"barcelona")),
+    val nameTopic =new TopicNameBuilder(Seq(new PersistStrategy(blueGarnetTeam,"barcelona"),
+                                            new PersistStrategy(whiteTeam,"realmadrid")
+                                            ),
                          defaultNameTopic).topicName(message)
     KafkaPersist(nameTopic)
   }
