@@ -8,7 +8,7 @@ import org.mockito.Matchers.anyString
 
 trait PersistBuilderMock extends MockitoSugar {
 
-  def mockBuilder (message:String,persist:Persist): PersistBuilder = {
+  def mockBuilder (persist:Persist): PersistBuilder = {
      val persistBuilder = mock[PersistBuilder]
      when(persistBuilder.build(anyString)).thenReturn(persist)
      persistBuilder

@@ -14,7 +14,6 @@ class KafkaPersist (topic:String,producer:KafkaProducer[Date,(String,Date)]) ext
     val producerRecord = new ProducerRecord[Date,(String,Date)](topic, tuple._2, tuple)
 
     producer.send(producerRecord)
-    producer.close()
   }
 }
 

@@ -7,6 +7,7 @@ import big.data.study.doubles.StatusDouble
 import big.data.study.matchers.TupleMatcher
 import big.data.study.mocks.PersistBuilderMock
 import big.data.study.persist.Persist
+import big.data.study.queues.KafkaPersistBuilder
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 
@@ -36,15 +37,21 @@ class IngestorTest extends WordSpec  with PersistBuilderMock
   private val clock = new ClockWrapper(sc)
   private val persist = mock[Persist]
   private val advance = 1
+  private val persistBuilder = mockBuilder(persist)
+
+  override  def beforeAll(): Unit ={
+    new Ingestor(persistBuilder).ingest(sc.createDStream)
+    sc.start()
+
+  }
+
+  override def afterAll():Unit={
+    sc.stop()
+  }
 
   "We want to send tweet to persist and result  " should {
 
 
-    val persistBuilder = mockBuilder("Real Madrid",persist)
-
-    new Ingestor(persistBuilder).ingest(sc.createDStream)
-
-    sc.start()
     " be called one time with one twit in window " in {
 
       sc.addDataInRDD(Seq(new StatusDouble("Real Madrid","MM/dd/yy","01/01/16")))
@@ -63,7 +70,6 @@ class IngestorTest extends WordSpec  with PersistBuilderMock
         val status = new StatusDouble("Bremem","MM/dd/yy","01/01/16")
         verify(persist,times(2)).insert(argThat(new TupleMatcher(status.getText,status.getCreatedAt)))
       }
-      sc.stop()
     }
   }
 
