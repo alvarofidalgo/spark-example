@@ -7,7 +7,6 @@ import big.data.study.doubles.StatusDouble
 import big.data.study.matchers.TupleMatcher
 import big.data.study.mocks.PersistBuilderMock
 import big.data.study.persist.Persist
-import big.data.study.queues.KafkaPersistBuilder
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 
